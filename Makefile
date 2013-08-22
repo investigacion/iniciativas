@@ -1,6 +1,6 @@
-pages: gh-pages/iniciativas.html gh-pages/img
+pages: gh-pages/iniciativas/index.html gh-pages/img
 
-gh-pages/iniciativas.html: gh-pages node_modules html/iniciativas.ms data/iniciativas.json gh-pages/css/iniciativas.css
+gh-pages/iniciativas/index.html: gh-pages/iniciativas node_modules html/iniciativas.ms data/iniciativas.json gh-pages/css/iniciativas.css
 	node \
 		-e "console.log(require('hogan.js') \
 			.compile(require('fs').readFileSync('html/iniciativas.ms', {encoding: 'utf8'})) \
@@ -38,7 +38,11 @@ gh-pages:
 	fi;
 	touch $@
 
-gh-pages/css: gh-pages
+SUBDIRS := \
+	gh-pages/css \
+	gh-pages/iniciativas
+
+$(SUBDIRS): gh-pages
 	if [ ! -d $@ ]; then \
 		mkdir $@; \
 	fi;

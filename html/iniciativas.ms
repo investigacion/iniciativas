@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 	<head>
-		<link rel="stylesheet" href="css/iniciativas.css">
+		<meta charset="utf-8">
+		<title>Iniciativas — La Nación</title>
+		<link rel="stylesheet" href="../css/iniciativas.css">
 	</head>
 	<body>
-		<header class="app-header">
+		<header class="app">
 			<h1>Iniciativas</h1>
-			<p><img alt="La Nación" src="img/nacion-logo.svg"></p>
-			<form>
+			<p><img alt="La Nación" src="../img/nacion-logo.svg" class="logo"></p>
+			<form class="search">
 				<input type="search" name="q">
 			</form>
 		</header>
-		<nav>
+		<nav class="index">
 			<ul>
 				{{#initiatives}}
 				<li>
-					<a href="iniciativas/{{número}}" title="{{tipo}} — {{proponente}}">
-						<h2>{{tipo}}</h2>
-						<p>Iniciativa presentado por {{proponente}} en {{año}}.</p>
-					</a>
+					<a href="iniciativas/{{número}}" title="{{tipo}} — {{proponente}}"><h2>{{tipo}}</h2></a>
+					<p>Iniciativa presentado por {{proponente}} en {{año}}.</p>
 				</li>
 				{{/initiatives}}
 			</ul>

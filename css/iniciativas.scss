@@ -1,2 +1,15 @@
-@import "shared/structure";
+@import 'shared/structure';
 
+nav.index {
+	margin: 4rem 2rem 0 35%;
+}
+
+nav.index ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav.index h2 {
+	color: #e65648;
+}
