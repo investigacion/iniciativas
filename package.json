@@ -1,0 +1,9 @@
+{
+	"private": true,
+	"name": "iniciativas",
+	"version": "0.0.1",
+	"dependencies": {
+		"dsv": "0.x",
+		"hogan.js": "2.x"
+	}
+}
