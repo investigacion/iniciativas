@@ -27,7 +27,7 @@ function load() {
 	var xhr;
 
 	xhr = new XMLHttpRequest();
-	xhr.open('GET', '../data/iniciativas.json', true);
+	xhr.open('GET', 'data/iniciativas.json', true);
 	xhr.onload = function() {
 		data = JSON.parse(xhr.responseText);
 		search();

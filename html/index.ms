@@ -3,13 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Iniciativas — La Nación</title>
-		<link rel="stylesheet" href="../css/iniciativas.css">
-		<script src="../js/iniciativas.js" async></script>
+		<link rel="stylesheet" href="css/index.css">
+		<script src="js/index.js" async></script>
 	</head>
 	<body>
 		<header class="app">
 			<h1>Iniciativas</h1>
-			<p><img alt="La Nación" src="../img/nacion-logo.svg" class="logo"></p>
+			<p><img alt="La Nación" src="img/nacion-logo.svg" class="logo"></p>
 			<form class="search">
 				<input type="search" name="q" class="q" placeholder="Filtrar">
 				<p class="total">{{initiatives.length}} iniciativas</p>

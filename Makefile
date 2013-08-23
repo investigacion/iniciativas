@@ -2,18 +2,18 @@ INICIATIVAS := $(shell \
 		cat data/iniciativas.csv | \
 		grep -oE "^[0-9]+")
 
-pages: gh-pages/img gh-pages/iniciativas/index.html $(INICIATIVAS:%=gh-pages/iniciativas/%.html) gh-pages/css/iniciativa.css gh-pages/css/iniciativas.css gh-pages/js/iniciativas.js gh-pages/data/iniciativas.json
+pages: gh-pages/img gh-pages/index.html $(INICIATIVAS:%=gh-pages/%.html) gh-pages/css/iniciativa.css gh-pages/css/index.css gh-pages/js/index.js gh-pages/data/iniciativas.json
 
-gh-pages/iniciativas/index.html: node_modules gh-pages/iniciativas html/iniciativas.ms
+gh-pages/index.html: node_modules gh-pages html/index.ms
 	node \
 		-e "console.log(require('hogan.js') \
-			.compile(require('fs').readFileSync('html/iniciativas.ms', {encoding: 'utf8'})) \
+			.compile(require('fs').readFileSync('html/index.ms', {encoding: 'utf8'})) \
 			.render({ \
 				initiatives: require('./data/iniciativas.json') \
 			}))" \
 		> $@
 
-$(INICIATIVAS:%=gh-pages/iniciativas/%.html): node_modules html/iniciativa.ms
+$(INICIATIVAS:%=gh-pages/%.html): node_modules html/iniciativa.ms
 	node \
 		-e "var initiative; \
 			require('./data/iniciativas.json').some(function(c) { \
@@ -69,7 +69,6 @@ gh-pages:
 
 SUBDIRS := \
 	gh-pages/css \
-	gh-pages/iniciativas \
 	gh-pages/data \
 	gh-pages/js
 

@@ -3,12 +3,12 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Iniciativas — La Nación</title>
-		<link rel="stylesheet" href="../css/iniciativa.css">
+		<link rel="stylesheet" href="css/iniciativa.css">
 	</head>
 	<body>
 		<header class="app">
 			<h1>Iniciativas</h1>
-			<p><img alt="La Nación" src="../img/nacion-logo.svg" class="logo"></p>
+			<p><img alt="La Nación" src="img/nacion-logo.svg" class="logo"></p>
 			<form class="search">
 				<input type="search" name="q" class="q" placeholder="Filtrar">
 			</form>
