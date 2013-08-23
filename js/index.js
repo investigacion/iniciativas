@@ -7,6 +7,11 @@ var data;
 require('domready')(function() {
 	var timeout = null;
 
+	document.querySelector('form.search').addEventListener('submit', function(event) {
+		event.preventDefault();
+		return false;
+	}, false);
+
 	document.querySelector('.q').addEventListener('keyup', function() {
 		indicate();
 	
