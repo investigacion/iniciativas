@@ -4,20 +4,22 @@
 		<meta charset="utf-8">
 		<title>Iniciativas — La Nación</title>
 		<link rel="stylesheet" href="../css/iniciativas.css">
+		<script src="../js/iniciativas.js" async></script>
 	</head>
 	<body>
 		<header class="app">
 			<h1>Iniciativas</h1>
 			<p><img alt="La Nación" src="../img/nacion-logo.svg" class="logo"></p>
 			<form class="search">
-				<input type="search" name="q">
+				<input type="search" name="q" class="q" placeholder="Filtrar">
+				<p class="total">{{initiatives.length}} iniciativas</p>
 			</form>
 		</header>
 		<nav class="index">
 			<ul>
 				{{#initiatives}}
-				<li>
-					<a href="iniciativas/{{número}}" title="{{tipo}} — {{proponente}}"><h2>{{tipo}}</h2></a>
+				<li data-id="{{número}}">
+					<h2><a href="{{número}}.html">{{tipo}}</a></h2>
 					<p>Iniciativa presentado por {{proponente}} en {{año}}.</p>
 				</li>
 				{{/initiatives}}

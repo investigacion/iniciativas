@@ -1,6 +1,10 @@
-pages: gh-pages/iniciativas/index.html gh-pages/img
+INICIATIVAS := $(shell \
+		cat data/iniciativas.csv | \
+		grep -oE "^[0-9]+")
 
-gh-pages/iniciativas/index.html: gh-pages/iniciativas node_modules html/iniciativas.ms data/iniciativas.json gh-pages/css/iniciativas.css
+pages: gh-pages/img gh-pages/iniciativas/index.html $(INICIATIVAS:%=gh-pages/iniciativas/%.html) gh-pages/css/iniciativa.css gh-pages/css/iniciativas.css gh-pages/js/iniciativas.js gh-pages/data/iniciativas.json
+
+gh-pages/iniciativas/index.html: node_modules gh-pages/iniciativas html/iniciativas.ms
 	node \
 		-e "console.log(require('hogan.js') \
 			.compile(require('fs').readFileSync('html/iniciativas.ms', {encoding: 'utf8'})) \
@@ -9,7 +13,32 @@ gh-pages/iniciativas/index.html: gh-pages/iniciativas node_modules html/iniciati
 			}))" \
 		> $@
 
-gh-pages/css/%.css: gh-pages/css node_modules css/%.scss css/shared/*.scss
+$(INICIATIVAS:%=gh-pages/iniciativas/%.html): node_modules html/iniciativa.ms
+	node \
+		-e "var initiative; \
+			require('./data/iniciativas.json').some(function(c) { \
+				if ($(patsubst %.html,%,$(@F)) === c['número']) { \
+					initiative = c; \
+					return true; \
+				} \
+			}); \
+			console.log(require('hogan.js') \
+				.compile(require('fs').readFileSync('html/iniciativa.ms', {encoding: 'utf8'})) \
+				.render(initiative))" \
+		> $@
+
+gh-pages/data/iniciativas.json: gh-pages/data data/iniciativas.json
+	node \
+		-e "console.log(JSON.stringify(require('./data/iniciativas.json')))" \
+		> $@
+
+gh-pages/js/%.js: node_modules gh-pages/js js/%.js
+	./node_modules/browserify/bin/cmd.js \
+		js/$(@F) \
+		--outfile $@ \
+		--entry js/$(@F)
+
+gh-pages/css/%.css: gh-pages/css css/%.scss css/shared/*.scss
 	compass compile \
 		css/$(@F:.css=.scss) \
 		--sass-dir css \
@@ -40,7 +69,9 @@ gh-pages:
 
 SUBDIRS := \
 	gh-pages/css \
-	gh-pages/iniciativas
+	gh-pages/iniciativas \
+	gh-pages/data \
+	gh-pages/js
 
 $(SUBDIRS): gh-pages
 	if [ ! -d $@ ]; then \

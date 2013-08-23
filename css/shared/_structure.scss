@@ -22,6 +22,7 @@ a {
 	text-decoration: none;
 }
 
+article h1,
 h2 {
 	font-family: 'Oswald', sans-serif;
 	font-weight: normal;
@@ -35,6 +36,7 @@ header.app {
 	position: fixed;
 	width: 100%;
 	top: 0;
+	color: white;
 	@include box-sizing(border-box);
 }
 
@@ -42,17 +44,19 @@ header.app > * {
 	display: inline-block;
 }
 
-header.app h1 {
+header.app > h1 {
 	margin: 0;
-	color: white;
 	font-size: 2.2rem;
 	font-family: 'Shadows Into Light', cursive;
 	
 }
 
+header.app > p {
+	vertical-align: top;
+}
+
 header.app p {
 	margin: 0;
-	vertical-align: top;
 }
 
 header.app .logo {
@@ -65,4 +69,8 @@ header.app .search {
 	vertical-align: top;
 	position: absolute;
 	left: 35%;
+}
+
+header.app .search .total {
+	display: inline-block;
 }

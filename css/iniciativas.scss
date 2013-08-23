@@ -4,10 +4,14 @@ nav.index {
 	margin: 4rem 2rem 0 35%;
 }
 
-nav.index ul {
+nav.index > ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+nav.index > ul > li.hidden {
+	display: none;
 }
 
 nav.index h2 {
