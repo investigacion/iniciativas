@@ -2,10 +2,11 @@
 
 'use strict';
 
+var qs = require('querystring');
 var data;
 
 require('domready')(function() {
-	var timeout = null;
+	var timeout = null, loading = false, q, onload;
 
 	document.querySelector('form.search').addEventListener('submit', function(event) {
 		event.preventDefault();
@@ -13,10 +14,25 @@ require('domready')(function() {
 	}, false);
 
 	document.querySelector('.q').addEventListener('keyup', function() {
+		var cb;
+
+		onload = function() {
+			search(document.querySelector('.q').value);
+		};
+
+		cb = function() {
+			onload();
+		};
+
 		indicate();
-	
+
 		if (!data) {
-			return load();
+			if (loading) {
+				return;
+			}
+
+			loading = true;
+			return load(cb);
 		}
 
 		// Debounce
@@ -24,18 +40,29 @@ require('domready')(function() {
 			clearTimeout(timeout);
 		}
 
-		timeout = setTimeout(search, 1000);
+		timeout = setTimeout(cb, 1000);
 	}, false);
+
+	q = qs.parse(location.search.substr(1)).q;
+	if (q) {
+		onload = function() {
+			search(q);
+		};
+
+		load(function() {
+			onload();
+		});
+	}
 });
 
-function load() {
+function load(cb) {
 	var xhr;
 
 	xhr = new XMLHttpRequest();
 	xhr.open('GET', 'data/iniciativas.json', true);
 	xhr.onload = function() {
 		data = JSON.parse(xhr.responseText);
-		search();
+		cb();
 	};
 
 	xhr.send();
@@ -56,10 +83,10 @@ function unindicate(length) {
 	document.querySelector('.total').textContent = text;
 }
 
-function search() {
-	var q, i, l, lis, li, initiative, total;
+function search(q) {
+	var i, l, lis, li, initiative, total;
 
-	q = document.querySelector('.q').value.trim();
+	q = q.trim();
 	total = data.length;
 
 	if (q.length < 3) {

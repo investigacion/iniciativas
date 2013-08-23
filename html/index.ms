@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<header class="app">
-			<h1>Iniciativas</h1>
+			<h1><a href="./">Iniciativas</a></h1>
 			<p><img alt="La Nación" src="img/nacion-logo.svg" class="logo"></p>
 			<form class="search">
 				<input type="search" name="q" class="q" placeholder="Filtrar">
