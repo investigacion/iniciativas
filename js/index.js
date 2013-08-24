@@ -3,14 +3,22 @@
 'use strict';
 
 var qs = require('querystring');
-var data, loading = false, onload, popstateAdded;
-
-window.addEventListener('popstate', function(event) {
-	console.log(event);
-}, false);
+var data, loading = false, onload, neverFiltered = true;
 
 require('domready')(function() {
 	var timeout = null, q;
+
+	window.addEventListener('load', function() {
+		setTimeout(function() {
+			window.addEventListener('popstate', function(event) {
+				if (event.state) {
+					search(event.state.q);
+				} else if (!neverFiltered) {
+					search('');
+				}
+			}, false);
+		}, 0);
+	}, false);
 
 	document.querySelector('form.search').addEventListener('submit', function(event) {
 		event.preventDefault();
@@ -88,7 +96,9 @@ function unindicate(length) {
 }
 
 function filter(q, pushState) {
-	var i, l, lis, li, initiative, total;
+	var i, l, lis, li, initiative, total, title;
+
+	neverFiltered = false;
 
 	q = q.trim();
 	total = data.length;
@@ -101,8 +111,9 @@ function filter(q, pushState) {
 			lis[i].classList.remove('hidden');
 		}
 
+		title = 'Iniciativas \u2014 La Nación';
 		if (pushState) {
-			history.pushState(null, 'Iniciativas \u2014 La Nación', './');
+			history.pushState(null, title, './');
 		}
 	} else {
 		q = q.toLowerCase();
@@ -123,20 +134,15 @@ function filter(q, pushState) {
 			}
 		}
 
+		title = q + ' \u2014 Iniciativas \u2014 La Nación';
 		if (pushState) {
 			history.pushState({
 				q: q
-			}, q + ' \u2014 Iniciativas \u2014 La Nación', './?q=' + encodeURIComponent(q));
+			}, title, './?q=' + encodeURIComponent(q));
 		}
 	}
 
-	if (!popstateAdded) {
-		window.addEventListener('popstate', function(event) {
-			search((event.state && event.state.q) || '');
-		}, false);
-
-		popstateAdded = true;
-	}
+	document.title = title;
 
 	unindicate(total);
 }
