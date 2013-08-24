@@ -31,6 +31,7 @@ require('domready')(function() {
 
 	q = qs.parse(location.search.substr(1)).q;
 	if (q) {
+		document.querySelector('.q').value = q;
 		search(q);
 	}
 });
