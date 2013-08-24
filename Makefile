@@ -62,10 +62,23 @@ node_modules: package.json
 	touch $@
 
 gh-pages:
-	if [ ! -d $@ ]; then \
-		mkdir $@; \
+	if [ ! -d gh-pages ]; then \
+		if git ls-remote --heads https://github.com/investigacion/iniciativas.git | grep --quiet gh-pages; then \
+			git clone git@github.com:investigacion/iniciativas.git -b gh-pages gh-pages; \
+		else \
+			mkdir gh-pages; \
+			cd gh-pages; \
+			git clone git@github.com:investigacion/iniciativas.git .; \
+			git checkout --orphan gh-pages; \
+			git rm -rf .; \
+			echo ".DS_Store" > .gitignore; \
+			git add .gitignore; \
+			git ci -m "Initial commit"; \
+			git push --set-upstream origin gh-pages; \
+		fi; \
+	else \
+		cd gh-pages && git pull; \
 	fi;
-	touch $@
 
 SUBDIRS := \
 	gh-pages/css \
@@ -82,4 +95,15 @@ gh-pages/img: gh-pages
 	cp -r img $@
 	touch $@
 
-.PHONY: pages
+publish:
+	cd gh-pages && git add . --all && \
+	git ci \
+		-m "Automated commit from make" && \
+	git push
+
+clean:
+	if [ -d gh-pages ]; then \
+		cd gh-pages && git reset --hard && git clean -df
+	fi;
+
+.PHONY: pages clean publish
