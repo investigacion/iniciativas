@@ -2,7 +2,7 @@ INICIATIVAS := $(shell \
 		cat data/iniciativas.csv | \
 		grep -oE "^[0-9]+")
 
-pages: gh-pages/img gh-pages/index.html $(INICIATIVAS:%=gh-pages/%.html) gh-pages/css/iniciativa.css gh-pages/css/index.css gh-pages/js/index.js gh-pages/data/iniciativas.json
+pages: gh-pages/img gh-pages/index.html gh-pages/css/iniciativa.css gh-pages/css/index.css gh-pages/js/index.js gh-pages/data/iniciativas.json $(INICIATIVAS:%=gh-pages/%.html)
 
 gh-pages/index.html: node_modules gh-pages html/index.ms
 	node \
