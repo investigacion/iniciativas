@@ -11,3 +11,14 @@ article.initiative h1 {
 article.initiative p {
 	white-space: pre-wrap;
 }
+
+article.initiative p.status {
+	text-transform: uppercase;
+	color: #5ab251;
+	font-weight: bold;
+}
+
+article.initiative .proponent,
+article.initiative .year {
+	border-bottom: 1px solid #badab0;
+}
