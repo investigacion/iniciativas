@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="utf-8">
-		<title>Iniciativas — La Nación</title>
+		<title>Iniciativa {{número}} — La Nación</title>
 		<link rel="stylesheet" href="css/iniciativa.css">
 	</head>
 	<body>

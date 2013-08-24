@@ -3,10 +3,14 @@
 'use strict';
 
 var qs = require('querystring');
-var data;
+var data, loading = false, onload, popstateAdded;
+
+window.addEventListener('popstate', function(event) {
+	console.log(event);
+}, false);
 
 require('domready')(function() {
-	var timeout = null, loading = false, q, onload;
+	var timeout = null, q;
 
 	document.querySelector('form.search').addEventListener('submit', function(event) {
 		event.preventDefault();
@@ -14,46 +18,45 @@ require('domready')(function() {
 	}, false);
 
 	document.querySelector('.q').addEventListener('keyup', function() {
-		var cb;
-
-		onload = function() {
-			search(document.querySelector('.q').value);
-		};
-
-		cb = function() {
-			onload();
-		};
-
-		indicate();
-
-		if (!data) {
-			if (loading) {
-				return;
-			}
-
-			loading = true;
-			return load(cb);
-		}
 
 		// Debounce
 		if (null !== timeout) {
 			clearTimeout(timeout);
 		}
 
-		timeout = setTimeout(cb, 1000);
+		timeout = setTimeout(function() {
+			search(document.querySelector('.q').value, true);
+		}, 1000);
 	}, false);
 
 	q = qs.parse(location.search.substr(1)).q;
 	if (q) {
-		onload = function() {
-			search(q);
-		};
-
-		load(function() {
-			onload();
-		});
+		search(q);
 	}
 });
+
+function search(q, pushState) {
+	indicate();
+
+	if (data) {
+		return filter(q, pushState);
+	}
+
+	onload = function() {
+		filter(q, pushState);
+	};
+
+	if (loading) {
+		return;
+	}
+
+	loading = true;
+	load(function() {
+		loading = false;
+		onload();
+		onload = null;
+	});
+}
 
 function load(cb) {
 	var xhr;
@@ -83,16 +86,22 @@ function unindicate(length) {
 	document.querySelector('.total').textContent = text;
 }
 
-function search(q) {
+function filter(q, pushState) {
 	var i, l, lis, li, initiative, total;
 
 	q = q.trim();
 	total = data.length;
 
+	pushState = pushState && history.pushState;
+
 	if (q.length < 3) {
 		lis = document.querySelectorAll('nav.index > ul > li.hidden');
 		for (i = 0, l = lis.length; i < l; i++) {
 			lis[i].classList.remove('hidden');
+		}
+
+		if (pushState) {
+			history.pushState(null, 'Iniciativas \u2014 La Nación', './');
 		}
 	} else {
 		q = q.toLowerCase();
@@ -112,6 +121,20 @@ function search(q) {
 				li.classList.add('hidden');
 			}
 		}
+
+		if (pushState) {
+			history.pushState({
+				q: q
+			}, q + ' \u2014 Iniciativas \u2014 La Nación', './?q=' + encodeURIComponent(q));
+		}
+	}
+
+	if (!popstateAdded) {
+		window.addEventListener('popstate', function(event) {
+			search((event.state && event.state.q) || '');
+		}, false);
+
+		popstateAdded = true;
 	}
 
 	unindicate(total);
