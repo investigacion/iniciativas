@@ -2,29 +2,40 @@ INICIATIVAS := $(shell \
 		cat data/iniciativas.csv | \
 		grep -oE "^[0-9]+")
 
-pages: gh-pages/img gh-pages/index.html gh-pages/css/iniciativa.css gh-pages/css/index.css gh-pages/js/index.js gh-pages/data/iniciativas.json $(INICIATIVAS:%=gh-pages/%.html)
+pages: \
+	gh-pages/img \
+	gh-pages/index.html \
+	gh-pages/css/iniciativa.css \
+	gh-pages/css/index.css \
+	gh-pages/js/index.js \
+	gh-pages/data/iniciativas.json \
+	$(INICIATIVAS:%=gh-pages/%.html)
 
-gh-pages/index.html: node_modules gh-pages html/index.ms
+build/templates.js: html/*.ms build node_modules
+	echo "var Hogan = require('hogan.js/lib/template');" \
+		> $@
+	./node_modules/hogan.js/bin/hulk \
+		html/*.ms \
+		>> $@
+	echo "module.exports = templates;" \
+		>> $@
+
+gh-pages/index.html: gh-pages build/templates.js
 	node \
-		-e "console.log(require('hogan.js') \
-			.compile(require('fs').readFileSync('html/index.ms', {encoding: 'utf8'})) \
-			.render({ \
+		-e "console.log(require('./build/templates').index.render({ \
 				initiatives: require('./data/iniciativas.json') \
 			}))" \
 		> $@
 
-$(INICIATIVAS:%=gh-pages/%.html): node_modules html/iniciativa.ms
+$(INICIATIVAS:%=gh-pages/%.html): gh-pages build/templates.js
 	node \
-		-e "var initiative; \
-			require('./data/iniciativas.json').some(function(c) { \
+		-e "require('./data/iniciativas.json').some(function(c) { \
 				if ($(patsubst %.html,%,$(@F)) === c['número']) { \
-					initiative = c; \
+					c.asunto = '<p>' + c.asunto.split('\n').join('</p>\n<p>').replace(/<p>\s/g, '<p>') + '</p>'; \
+					console.log(require('./build/templates').iniciativa.render(c)); \
 					return true; \
 				} \
-			}); \
-			console.log(require('hogan.js') \
-				.compile(require('fs').readFileSync('html/iniciativa.ms', {encoding: 'utf8'})) \
-				.render(initiative))" \
+			});" \
 		> $@
 
 gh-pages/data/iniciativas.json: gh-pages/data data/iniciativas.json
@@ -81,6 +92,7 @@ gh-pages:
 	fi;
 
 SUBDIRS := \
+	build \
 	gh-pages/css \
 	gh-pages/data \
 	gh-pages/js

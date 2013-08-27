@@ -22,7 +22,7 @@
 			{{^url}}
 			<p class="status">{{trámite}}</p>
 			{{/url}}
-			<p>{{asunto}}</p>
+			<p>{{{asunto}}}</p>
 		</article>
 	</body>
 </html>
