@@ -20,7 +20,7 @@
 				{{#initiatives}}
 				<li data-id="{{número}}">
 					<h2><a href="{{número}}.html">{{tipo}}</a></h2>
-					<p>Iniciativa presentado por {{proponente}} en {{año}}.</p>
+					<p>Iniciativa presentada por {{proponente}} en {{año}}.</p>
 				</li>
 				{{/initiatives}}
 			</ul>
