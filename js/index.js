@@ -112,6 +112,8 @@ function filter(q, pushState) {
 			lis[i].classList.remove('hidden');
 		}
 
+		bar(0);
+
 		title = 'Iniciativas \u2014 La Nación';
 		if (pushState) {
 			history.pushState(null, title, './');
@@ -135,6 +137,8 @@ function filter(q, pushState) {
 			}
 		}
 
+		bar(Math.round((total / data.length) * 100));
+
 		title = q + ' \u2014 Iniciativas \u2014 La Nación';
 		if (pushState) {
 			history.pushState({
@@ -146,6 +150,30 @@ function filter(q, pushState) {
 	document.title = title;
 
 	unindicate(total);
+}
+
+function bar(percentage) {
+	var container, spirit, label;
+
+	spirit = document.getElementById('spirit');
+	if (spirit) {
+		label = document.getElementById('spirit-label');
+	} else {
+		container = document.body.appendChild(document.createElement('div'));
+		container.id = 'spirit-container';
+		spirit = container.appendChild(document.createElement('div'));
+		spirit.id = 'spirit';
+		label = container.appendChild(document.createElement('p'));
+		label.id = 'spirit-label';
+	}
+
+	if (percentage) {
+		label.textContent = percentage + ' por ciento del total.';
+	} else {
+		label.textContent = '';
+	}
+
+	spirit.style.width = percentage + '%';
 }
 
 },{"domready":3,"querystring":2}],2:[function(require,module,exports){
