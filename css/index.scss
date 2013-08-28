@@ -17,3 +17,20 @@ nav.index > ul > li.hidden {
 nav.index h2 {
 	color: #e65648;
 }
+
+#spirit-container {
+	width: 30%;
+	height: 0.2rem;
+	position: fixed;
+	top: 4rem;
+	left: 2rem;
+}
+
+#spirit {
+	height: 100%;
+	background-color: #9bcb90;
+}
+
+#spirit-label {
+	margin: 1em 0 0 0;
+}
