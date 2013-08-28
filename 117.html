@@ -9,7 +9,7 @@
 		<header class="app">
 			<h1><a href="./">Iniciativas</a></h1>
 			<p><img alt="La Nación" src="img/nacion-logo.svg" class="logo"></p>
-			<form class="search">
+			<form class="search" action="./">
 				<input type="search" name="q" class="q" placeholder="Filtrar">
 			</form>
 		</header>
