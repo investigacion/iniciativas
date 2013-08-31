@@ -89,6 +89,7 @@ gh-pages:
 		fi; \
 	else \
 		cd gh-pages && git pull; \
+		touch $@; \
 	fi;
 
 SUBDIRS := \
