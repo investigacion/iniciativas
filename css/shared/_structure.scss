@@ -75,3 +75,21 @@ header.app .search {
 header.app .search .total {
 	display: inline-block;
 }
+
+@media (max-width: 980px) {
+	header.app .search {
+		left: inherit;
+		right: 2rem;
+	}
+}
+
+@media (max-width: 600px) {
+	header.app p {
+		color: black;
+	}
+
+	header.app .search {
+		position: static;
+		display: block;
+	}
+}

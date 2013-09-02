@@ -20,17 +20,32 @@ nav.index h2 {
 
 #spirit-container {
 	width: 30%;
-	height: 0.2rem;
 	position: fixed;
 	top: 4rem;
 	left: 2rem;
 }
 
 #spirit {
-	height: 100%;
+	height: 0.2rem;
 	background-color: #9bcb90;
 }
 
 #spirit-label {
 	margin: 1em 0 0 0;
+}
+
+@media (max-width: 980px) {
+	nav.index {
+		margin-left: 2rem;
+	}
+
+	#spirit-container {
+		display: none;
+	}
+}
+
+@media (max-width: 600px) {
+	nav.index {
+		margin-top: 6rem;
+	}
 }
