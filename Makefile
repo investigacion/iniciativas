@@ -11,7 +11,7 @@ pages: \
 	gh-pages/data/iniciativas.json \
 	$(INICIATIVAS:%=gh-pages/%.html)
 
-build/templates.js: html/*.ms build node_modules
+build/templates/%.js: html/%.ms build/templates node_modules
 	echo "var Hogan = require('hogan.js/lib/template');" \
 		> $@
 	./node_modules/hogan.js/bin/hulk \
@@ -20,19 +20,19 @@ build/templates.js: html/*.ms build node_modules
 	echo "module.exports = templates;" \
 		>> $@
 
-gh-pages/index.html: gh-pages build/templates.js
+gh-pages/index.html: gh-pages build/templates/index.js
 	node \
-		-e "console.log(require('./build/templates').index.render({ \
+		-e "console.log(require('./build/templates/index').index.render({ \
 				initiatives: require('./data/iniciativas.json') \
 			}))" \
 		> $@
 
-$(INICIATIVAS:%=gh-pages/%.html): gh-pages build/templates.js
+$(INICIATIVAS:%=gh-pages/%.html): gh-pages build/templates/iniciativa.js
 	node \
 		-e "require('./data/iniciativas.json').some(function(c) { \
 				if ($(patsubst %.html,%,$(@F)) === c['número']) { \
 					c.asunto = '<p>' + c.asunto.split('\n').join('</p>\n<p>').replace(/<p>\s/g, '<p>') + '</p>'; \
-					console.log(require('./build/templates').iniciativa.render(c)); \
+					console.log(require('./build/templates/iniciativa').iniciativa.render(c)); \
 					return true; \
 				} \
 			});" \
@@ -92,13 +92,21 @@ gh-pages:
 		touch $@; \
 	fi;
 
-SUBDIRS := \
-	build \
+PAGES_SUBDIRS := \
 	gh-pages/css \
 	gh-pages/data \
 	gh-pages/js
 
-$(SUBDIRS): gh-pages
+$(PAGES_SUBDIRS): gh-pages
+	if [ ! -d $@ ]; then \
+		mkdir $@; \
+	fi;
+	touch $@
+
+BUILD_SUBDIRS := \
+	build/templates
+
+$(BUILD_SUBDIRS): build
 	if [ ! -d $@ ]; then \
 		mkdir $@; \
 	fi;
