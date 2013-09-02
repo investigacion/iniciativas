@@ -149,7 +149,13 @@ function filter(q, pushState) {
 			}
 		}
 
-		bar(Math.round((total / data.length) * 100));
+		if (total > 0) {
+			bar((total / data.length) * 100);
+		} else {
+
+			// No results - hide the bar.
+			bar(0);
+		}
 
 		title = q + ' \u2014 Iniciativas \u2014 La Nación';
 		if (pushState) {
@@ -180,10 +186,17 @@ function bar(percentage) {
 	}
 
 	if (percentage) {
+		if (percentage < 1) {
+			percentage = '< 1';
+			spirit.style.width = '1%';
+		} else {
+			percentage = Math.round(percentage);
+			spirit.style.width = percentage + '%';
+		}
+
 		label.textContent = percentage + ' por ciento del total.';
 	} else {
 		label.textContent = '';
+		spirit.style.width = 0;
 	}
-
-	spirit.style.width = percentage + '%';
 }
