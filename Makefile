@@ -108,7 +108,7 @@ gh-pages/img: gh-pages
 	cp -r img $@
 	touch $@
 
-publish:
+publish: pages
 	cd gh-pages && git add . --all && \
 	git ci \
 		-m "Automated commit from make" && \
