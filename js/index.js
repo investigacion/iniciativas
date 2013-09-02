@@ -6,7 +6,7 @@ var qs = require('querystring');
 var data, loading = false, onload, neverFiltered = true;
 
 require('domready')(function() {
-	var timeout = null, q;
+	var timeout = null, q, form;
 
 	window.addEventListener('load', function() {
 		setTimeout(function() {
@@ -20,26 +20,39 @@ require('domready')(function() {
 		}, 0);
 	}, false);
 
-	document.querySelector('form.search').addEventListener('submit', function(event) {
+	form = document.querySelector('form.search');
+	form.addEventListener('submit', function(event) {
 		event.preventDefault();
+		if (null !== timeout) {
+			clearTimeout(timeout);
+		}
+
+		search(this.q.value, true);
+
 		return false;
 	}, false);
 
-	document.querySelector('.q').addEventListener('keyup', function() {
+	form.q.addEventListener('keyup', function(event) {
+		var q = this;
 
-		// Debounce
+		// Disregard the enter key - will be handled by submit above.
+		if (13 === event.keyCode) {
+			return;
+		}
+
+		// Debounce.
 		if (null !== timeout) {
 			clearTimeout(timeout);
 		}
 
 		timeout = setTimeout(function() {
-			search(document.querySelector('.q').value, true);
+			search(q.value, true);
 		}, 1000);
 	}, false);
 
 	q = qs.parse(location.search.substr(1)).q;
 	if (q) {
-		document.querySelector('.q').value = q;
+		form.q.value = q;
 		search(q);
 	}
 });
