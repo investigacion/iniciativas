@@ -7,7 +7,7 @@ var qs = require('querystring');
 var data, loading = false, onload, neverFiltered = true;
 
 require('domready')(function() {
-	var timeout = null, q;
+	var timeout = null, q, form;
 
 	window.addEventListener('load', function() {
 		setTimeout(function() {
@@ -21,26 +21,39 @@ require('domready')(function() {
 		}, 0);
 	}, false);
 
-	document.querySelector('form.search').addEventListener('submit', function(event) {
+	form = document.querySelector('form.search');
+	form.addEventListener('submit', function(event) {
 		event.preventDefault();
+		if (null !== timeout) {
+			clearTimeout(timeout);
+		}
+
+		search(this.q.value, true);
+
 		return false;
 	}, false);
 
-	document.querySelector('.q').addEventListener('keyup', function() {
+	form.q.addEventListener('keyup', function(event) {
+		var q = this;
 
-		// Debounce
+		// Disregard the enter key - will be handled by submit above.
+		if (13 === event.keyCode) {
+			return;
+		}
+
+		// Debounce.
 		if (null !== timeout) {
 			clearTimeout(timeout);
 		}
 
 		timeout = setTimeout(function() {
-			search(document.querySelector('.q').value, true);
+			search(q.value, true);
 		}, 1000);
 	}, false);
 
 	q = qs.parse(location.search.substr(1)).q;
 	if (q) {
-		document.querySelector('.q').value = q;
+		form.q.value = q;
 		search(q);
 	}
 });
@@ -137,7 +150,13 @@ function filter(q, pushState) {
 			}
 		}
 
-		bar(Math.round((total / data.length) * 100));
+		if (total > 0) {
+			bar((total / data.length) * 100);
+		} else {
+
+			// No results - hide the bar.
+			bar(0);
+		}
 
 		title = q + ' \u2014 Iniciativas \u2014 La Nación';
 		if (pushState) {
@@ -168,12 +187,19 @@ function bar(percentage) {
 	}
 
 	if (percentage) {
+		if (percentage < 1) {
+			percentage = '< 1';
+			spirit.style.width = '1%';
+		} else {
+			percentage = Math.round(percentage);
+			spirit.style.width = percentage + '%';
+		}
+
 		label.textContent = percentage + ' por ciento del total.';
 	} else {
 		label.textContent = '';
+		spirit.style.width = 0;
 	}
-
-	spirit.style.width = percentage + '%';
 }
 
 },{"domready":3,"querystring":2}],2:[function(require,module,exports){
