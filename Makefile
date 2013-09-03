@@ -112,9 +112,16 @@ $(BUILD_SUBDIRS): build
 	fi;
 	touch $@
 
-gh-pages/img: gh-pages
+gh-pages/img: gh-pages img gh-pages/img/nacion-logo.png
 	cp -r img $@
 	touch $@
+
+gh-pages/img/nacion-logo.png: img/nacion-logo.svg
+	inkscape \
+		--without-gui \
+		--export-png $@ \
+		-h 24 \
+		$<
 
 publish: pages
 	cd gh-pages && git add . --all && \

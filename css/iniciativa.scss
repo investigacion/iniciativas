@@ -18,3 +18,15 @@ article.initiative .proponent,
 article.initiative .year {
 	border-bottom: 1px solid #badab0;
 }
+
+@media (max-width: 980px) {
+	article.initiative {
+		margin-left: 2rem;
+	}
+}
+
+@media (max-width: 600px) {
+	article.initiative {
+		margin: 7rem 1rem 0 1rem;
+	}
+}

@@ -52,6 +52,10 @@ header.app > h1 {
 	
 }
 
+header.app > h1 > a {
+	display: block;
+}
+
 header.app > p {
 	vertical-align: top;
 }
@@ -76,6 +80,10 @@ header.app .search .total {
 	display: inline-block;
 }
 
+header.app .search .q {
+	width: 8rem;
+}
+
 @media (max-width: 980px) {
 	header.app .search {
 		left: inherit;
@@ -84,8 +92,11 @@ header.app .search .total {
 }
 
 @media (max-width: 600px) {
-	header.app p {
-		color: black;
+	header.app {
+		position: absolute;
+		padding: 0.6rem 1rem;
+		height: auto;
+		line-height: 2rem;
 	}
 
 	header.app .search {
