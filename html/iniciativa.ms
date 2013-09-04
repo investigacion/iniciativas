@@ -17,12 +17,14 @@
 		<article class="initiative">
 			<h1><a href="{{número}}.html">{{tipo}}</a></h1>
 			<p>Iniciativa presentada por <span class="proponent">{{proponente}}</span> en <span class="year">{{año}}</span>.</p>
+			{{#trámite}}
 			{{#url}}
 			<p class="status"><a href="{{url}}">{{trámite}}</a></p>
 			{{/url}}
 			{{^url}}
 			<p class="status">{{trámite}}</p>
 			{{/url}}
+			{{/trámite}}
 			{{{asunto}}}
 		</article>
 	</body>
