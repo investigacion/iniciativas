@@ -5,7 +5,7 @@
 		<title>Iniciativas — La Nación</title>
 		<link rel="stylesheet" href="css/index.css">
 		<script src="js/index.js" async></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 	</head>
 	<body>
 		<header class="app">
@@ -16,6 +16,10 @@
 				<p class="total">{{initiatives.length}} iniciativas</p>
 			</form>
 		</header>
+		<article class="index">
+			<p>Consulte las propuestas de ley y sugerencias que en 14 años han presentado 1138 personas u organizaciones ante la Oficina de Iniciativa Popular de la Asamblea Legislativa.</p>
+			<p>Esa oficina se creó en 1999 para que cualquier persona, no importa su edad, nacionalidad o nivel de educación, pueda presentar sus ideas a los diputados.</p>
+		</article>
 		<nav class="index">
 			<ul>
 				{{#initiatives}}

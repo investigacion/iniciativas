@@ -1,7 +1,10 @@
 @import 'shared/structure';
 
 nav.index {
-	margin: 4rem 2rem 0 35%;
+	float: right;
+	width: 65%;
+	padding: 0 2rem 0 0;
+	@include box-sizing(border-box);
 }
 
 nav.index > ul {
@@ -18,34 +21,58 @@ nav.index h2 {
 	color: #e65648;
 }
 
-#spirit-container {
-	width: 30%;
-	position: fixed;
-	top: 4rem;
-	left: 2rem;
+article.index {
+	float: left;
+	width: 35%;
+	padding: 0 2rem;
+	@include box-sizing(border-box);
 }
 
-#spirit {
-	height: 0.2rem;
-	background-color: #9bcb90;
-}
+@media (min-width: 980px) {
+	nav.index,
+	article.index {
+		margin-top: 2.6rem;
+	}
 
-#spirit-label {
-	margin: 1em 0 0 0;
+	article.index {
+		font-size: 1.2em;
+	}
+
+	article.index p:first-child {
+		font-size: 1.4em;
+	}
 }
 
 @media (max-width: 980px) {
-	nav.index {
-		margin-left: 2rem;
+	nav.index,
+	article.index {
+		float: none;
+		padding: 0;
+		margin: 0 2rem;
+		width: auto;
 	}
 
-	#spirit-container {
-		display: none;
+	article.index {
+		margin-top: 4rem;
+	}
+
+	article.index p {
+		font-size: 1.035em;
+		margin: 0.5em 0;
+	}
+
+	article.index p:first-child {
+		font-size: 1.2em;
 	}
 }
 
 @media (max-width: 600px) {
-	nav.index {
-		margin: 7rem 1rem 0 1rem;
+	article.index p:first-child {
+		font-size: 1.2em;
+	}
+
+	nav.index,
+	article.index {
+		margin: 0 1rem;
 	}
 }

@@ -6,6 +6,7 @@
 		"dsv": "0.x",
 		"hogan.js": "2.x",
 		"domready": "0.x",
-		"browserify": "2.x"
+		"browserify": "2.x",
+		"uglify-js": "2.x"
 	}
 }

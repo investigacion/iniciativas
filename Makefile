@@ -48,6 +48,12 @@ gh-pages/js/%.js: node_modules gh-pages/js js/%.js
 		js/$(@F) \
 		--outfile $@ \
 		--entry js/$(@F)
+	./node_modules/uglify-js/bin/uglifyjs \
+		$@ \
+		--compress \
+		--output $@
+	cat js/vendor/classList.min.js \
+		>> $@
 
 gh-pages/css/%.css: gh-pages/css css/%.scss css/shared/*.scss
 	compass compile \

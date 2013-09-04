@@ -97,12 +97,23 @@ function indicate() {
 	document.querySelector('.total').textContent = 'Buscando\u2026';
 }
 
-function unindicate(length) {
-	var text;
+function unindicate(length, total) {
+	var text, percentage;
 
-	text = length + ' iniciativa';
-	if (1 !== length) {
-		text += 's';
+	if (length && total) {
+		percentage = (length / total) * 100;
+		if (percentage < 1) {
+			percentage = '< 1';
+		} else {
+			percentage = Math.round(percentage);
+		}
+
+		text = length + ' de ' + total + ' iniciativas (' + percentage + '%)';
+	} else {
+		text = length + ' iniciativa';
+		if (1 !== length) {
+			text += 's';
+		}
 	}
 
 	document.querySelector('.total').textContent = text;
@@ -124,7 +135,7 @@ function filter(q, pushState) {
 			lis[i].classList.remove('hidden');
 		}
 
-		bar(0);
+		unindicate(total);
 
 		title = 'Iniciativas \u2014 La Nación';
 		if (pushState) {
@@ -149,13 +160,7 @@ function filter(q, pushState) {
 			}
 		}
 
-		if (total > 0) {
-			bar((total / data.length) * 100);
-		} else {
-
-			// No results - hide the bar.
-			bar(0);
-		}
+		unindicate(total, data.length);
 
 		title = q + ' \u2014 Iniciativas \u2014 La Nación';
 		if (pushState) {
@@ -166,37 +171,4 @@ function filter(q, pushState) {
 	}
 
 	document.title = title;
-
-	unindicate(total);
-}
-
-function bar(percentage) {
-	var container, spirit, label;
-
-	spirit = document.getElementById('spirit');
-	if (spirit) {
-		label = document.getElementById('spirit-label');
-	} else {
-		container = document.body.appendChild(document.createElement('div'));
-		container.id = 'spirit-container';
-		spirit = container.appendChild(document.createElement('div'));
-		spirit.id = 'spirit';
-		label = container.appendChild(document.createElement('p'));
-		label.id = 'spirit-label';
-	}
-
-	if (percentage) {
-		if (percentage < 1) {
-			percentage = '< 1';
-			spirit.style.width = '1%';
-		} else {
-			percentage = Math.round(percentage);
-			spirit.style.width = percentage + '%';
-		}
-
-		label.textContent = percentage + ' por ciento del total.';
-	} else {
-		label.textContent = '';
-		spirit.style.width = 0;
-	}
 }
