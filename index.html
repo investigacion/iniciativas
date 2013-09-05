@@ -19,6 +19,7 @@
 		<article class="index">
 			<p>Consulte las propuestas de ley y sugerencias que en 14 años han presentado 1138 personas u organizaciones ante la Oficina de Iniciativa Popular de la Asamblea Legislativa.</p>
 			<p>Esa oficina se creó en 1999 para que cualquier persona, no importa su edad, nacionalidad o nivel de educación, pueda presentar sus ideas a los diputados.</p>
+			<p>Lea la nota: <a target="_blank" href="http://www.nacion.com/data/leyes-nace-propuesta-ciudadanos_0_1364263590.html">Una de cada 100 leyes nace a propuesta de ciudadanos</a>.</p>
 		</article>
 		<nav class="index">
 			<ul>
