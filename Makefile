@@ -9,6 +9,7 @@ pages: \
 	gh-pages/css/index.css \
 	gh-pages/js/index.js \
 	gh-pages/data/iniciativas.json \
+	gh-pages/data/iniciativas.csv \
 	$(INICIATIVAS:%=gh-pages/%.html)
 
 build/templates/%.js: html/%.ms build/templates node_modules
@@ -42,6 +43,9 @@ gh-pages/data/iniciativas.json: gh-pages/data data/iniciativas.json
 	node \
 		-e "console.log(JSON.stringify(require('./data/iniciativas.json')))" \
 		> $@
+
+gh-pages/data/iniciativas.csv: data/iniciativas.csv
+	cp $< $@
 
 gh-pages/js/%.js: node_modules gh-pages/js js/%.js
 	./node_modules/browserify/bin/cmd.js \
@@ -113,6 +117,12 @@ BUILD_SUBDIRS := \
 	build/templates
 
 $(BUILD_SUBDIRS): build
+	if [ ! -d $@ ]; then \
+		mkdir $@; \
+	fi;
+	touch $@
+
+build:
 	if [ ! -d $@ ]; then \
 		mkdir $@; \
 	fi;
