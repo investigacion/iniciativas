@@ -1,5 +1,5 @@
 INICIATIVAS := $(shell \
-		cat data/iniciativas.csv | \
+		cat ../iniciativas-data/data/csv/iniciativas.csv | \
 		grep -oE "^[0-9]+")
 
 pages: \
@@ -24,13 +24,13 @@ build/templates/%.js: html/%.ms build/templates node_modules
 gh-pages/index.html: gh-pages build/templates/index.js
 	node \
 		-e "console.log(require('./build/templates/index').index.render({ \
-				initiatives: require('./data/iniciativas.json') \
+				initiatives: require('../iniciativas-data/data/csv/iniciativas.json') \
 			}))" \
 		> $@
 
 $(INICIATIVAS:%=gh-pages/%.html): gh-pages build/templates/iniciativa.js
 	node \
-		-e "require('./data/iniciativas.json').some(function(c) { \
+		-e "require('../iniciativas-data/data/csv/iniciativas.json').some(function(c) { \
 				if ($(patsubst %.html,%,$(@F)) === c['número']) { \
 					c.asunto = '<p>' + c.asunto.split('\n').join('</p>\n<p>').replace(/<p>\s/g, '<p>') + '</p>'; \
 					console.log(require('./build/templates/iniciativa').iniciativa.render(c)); \
@@ -39,12 +39,12 @@ $(INICIATIVAS:%=gh-pages/%.html): gh-pages build/templates/iniciativa.js
 			});" \
 		> $@
 
-gh-pages/data/iniciativas.json: gh-pages/data data/iniciativas.json
+gh-pages/data/iniciativas.json: gh-pages/data ../iniciativas-data/data/csv/iniciativas.json
 	node \
-		-e "console.log(JSON.stringify(require('./data/iniciativas.json')))" \
+		-e "console.log(JSON.stringify(require('../iniciativas-data/data/csv/iniciativas.json')))" \
 		> $@
 
-gh-pages/data/iniciativas.csv: data/iniciativas.csv
+gh-pages/data/iniciativas.csv: ../iniciativas-data/data/csv/iniciativas.csv
 	cp $< $@
 
 gh-pages/js/%.js: node_modules gh-pages/js js/%.js
@@ -66,17 +66,6 @@ gh-pages/css/%.css: gh-pages/css css/%.scss css/shared/*.scss
 		--css-dir gh-pages/css \
 		--output-style compressed \
 		--force
-
-data/iniciativas.json: node_modules data/iniciativas.csv scripts/data/iniciativas.js
-	node \
-		-e "require('./scripts/data/iniciativas').convert('data/iniciativas.csv', '$@')"
-
-data/iniciativas.csv:
-	curl \
-		--compressed \
-		--output $@ \
-		--progress-bar \
-		"https://docs.google.com/spreadsheet/pub?key=0Au1_UCDowko-dGpDSEdzRGs5VkZsLUtWTzZRY1NPckE&single=true&gid=0&output=csv"
 
 node_modules: package.json
 	npm install
