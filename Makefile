@@ -24,13 +24,13 @@ build/templates/%.js: html/%.ms build/templates node_modules
 gh-pages/index.html: gh-pages build/templates/index.js
 	node \
 		-e "console.log(require('./build/templates/index').index.render({ \
-				initiatives: require('../iniciativas-data/data/csv/iniciativas.json') \
+				initiatives: require('../iniciativas-data/data/json/iniciativas.json') \
 			}))" \
 		> $@
 
 $(INICIATIVAS:%=gh-pages/%.html): gh-pages build/templates/iniciativa.js
 	node \
-		-e "require('../iniciativas-data/data/csv/iniciativas.json').some(function(c) { \
+		-e "require('../iniciativas-data/data/json/iniciativas.json').some(function(c) { \
 				if ($(patsubst %.html,%,$(@F)) === c['número']) { \
 					c.asunto = '<p>' + c.asunto.split('\n').join('</p>\n<p>').replace(/<p>\s/g, '<p>') + '</p>'; \
 					console.log(require('./build/templates/iniciativa').iniciativa.render(c)); \
@@ -39,9 +39,9 @@ $(INICIATIVAS:%=gh-pages/%.html): gh-pages build/templates/iniciativa.js
 			});" \
 		> $@
 
-gh-pages/data/iniciativas.json: gh-pages/data ../iniciativas-data/data/csv/iniciativas.json
+gh-pages/data/iniciativas.json: gh-pages/data ../iniciativas-data/data/json/iniciativas.json
 	node \
-		-e "console.log(JSON.stringify(require('../iniciativas-data/data/csv/iniciativas.json')))" \
+		-e "console.log(JSON.stringify(require('../iniciativas-data/data/json/iniciativas.json')))" \
 		> $@
 
 gh-pages/data/iniciativas.csv: ../iniciativas-data/data/csv/iniciativas.csv
